@@ -1,0 +1,25 @@
+{
+  "name": "wumpus",
+  "version": "1.0.0",
+  "description": "A recreation of the wumpus game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ViniciusTBednascki/WumpusGame.git"
+  },
+  "keywords": [
+    "wumpus"
+  ],
+  "author": "Vinicius T. Bednascki",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViniciusTBednascki/WumpusGame/issues"
+  },
+  "homepage": "https://github.com/ViniciusTBednascki/WumpusGame#readme",
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
