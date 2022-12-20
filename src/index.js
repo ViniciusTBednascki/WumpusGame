@@ -7,13 +7,53 @@ function generateMap(width, height) {
         stench: false,
         breeze: false
     };
-    var caveMap = new Array(height).fill(false).map(function () { return new Array(width).fill(defaultCave); });
+    var caveMap = new Array(height).fill(false).map(function () { return new Array(width).fill(false); });
+    var entitiesQuantities = {
+        treasure: 1,
+        wumpus: 1,
+        pit: 3
+    };
+    var entitiesPositions = new Map();
+    for (var _i = 0, _a = Object.entries(entitiesQuantities); _i < _a.length; _i++) {
+        var _b = _a[_i], key = _b[0], value = _b[1];
+        for (var index = 0; index < value; index++) {
+            var positioned = false;
+            while (!positioned) {
+                var _c = generateObjectPosition(width, height), x = _c[0], y = _c[1];
+                var positionString = "".concat(x, ",").concat(y);
+                var hasPosition = entitiesPositions.has(positionString);
+                if (!hasPosition) {
+                    entitiesPositions.set(positionString, key);
+                    positioned = true;
+                }
+            }
+        }
+    }
+    console.log(entitiesPositions);
+    caveMap.forEach(function (row, y) {
+        row.forEach(function (cave, x) {
+            caveMap[y][x] = {
+                agent: false,
+                treasure: false,
+                wumpus: false,
+                pit: false,
+                stench: false,
+                breeze: false
+            };
+            var entitie = entitiesPositions.get("".concat(x, ",").concat(y));
+            if (entitie) {
+                caveMap[y][x][entitie] = true;
+            }
+        });
+    });
     return caveMap;
 }
 function generateObjectPosition(width, height) {
     var y = Math.floor(Math.random() * height);
-    var minX = y != 0 ? 0 : 1;
+    var min = 2;
+    var minX = y < min ? min : 0;
     var x = Math.floor(Math.random() * (width - minX) + minX);
     return [x, y];
 }
 var caveMap = generateMap(4, 4);
+console.log(caveMap);
