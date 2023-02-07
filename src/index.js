@@ -1,3 +1,10 @@
+var Direction;
+(function (Direction) {
+    Direction["Up"] = "UP";
+    Direction["Down"] = "DOWN";
+    Direction["Left"] = "LEFT";
+    Direction["Right"] = "RIGHT";
+})(Direction || (Direction = {}));
 function generateMap(size) {
     var width = size[0], height = size[1];
     var defaultCave = {
@@ -63,8 +70,30 @@ function generateCaves(entitiesPositions, size) {
     });
     return caveMap;
 }
-var caveMap = generateMap([4, 4]);
-for (var index = 0; index < caveMap.length; index++) {
-    var cave = caveMap[index];
-    console.log(cave);
+function moveAgent(caveMap, agentPosition, direction) {
+    var directionNumber = {
+        "UP": [0, -1],
+        "DOWN": [0, 1],
+        "LEFT": [-1, 0],
+        "RIGHT": [1, 0]
+    };
+    var _a = agentPosition.map(function (coordinate, index) { return coordinate + directionNumber[direction][index]; }), newX = _a[0], newY = _a[1];
+    var canMove = agentCanMove(caveMap, newX, newY);
+    var ICave = caveMap[agentPosition[1]][agentPosition[0]];
+    if (canMove) {
+        ICave = caveMap[newY][newX];
+    }
+    return [false, true, ICave];
 }
+function agentCanMove(caveMap, newX, newY) {
+    var height = caveMap.length;
+    var width = caveMap[0].length;
+    var possibleX = newX >= 0 && newX < width;
+    var possibleY = newY >= 0 && newY < height;
+    return (possibleX && possibleY);
+}
+var caveMap = generateMap([4, 4]);
+var agentPosition = [0, 2];
+console.log(caveMap[agentPosition[1]][agentPosition[0]]);
+var result = moveAgent(caveMap, agentPosition, Direction.Right);
+console.log(result);

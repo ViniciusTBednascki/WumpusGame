@@ -97,12 +97,37 @@ function generateCaves(entitiesPositions: Map<string,string>, size): Array<Array
 	return caveMap
 }
 
-function moveAgent(caveMap: Array<Array<ICave>>, agentPosition: [x: number, y: number], direction: Direction): [moved: boolean, cave: ICave] {
+function moveAgent(caveMap: Array<Array<ICave>>, agentPosition: number[], direction: Direction): [died: boolean, moved: boolean, cave: ICave] {
+	const directionNumber = {
+		"UP": [0,-1],
+		"DOWN": [0,1],
+		"LEFT": [-1,0],
+		"RIGHT": [1,0],
+	}
+
+	const [newX, newY] = agentPosition.map((coordinate, index) => coordinate + directionNumber[direction][index])
+
+	const canMove = agentCanMove(caveMap,newX, newY)
+	let ICave = caveMap[agentPosition[1]][agentPosition[0]];
+	if (canMove) {
+		ICave = caveMap[newY][newX]
+	}
+
+	return [false, true, ICave]
+}
+
+function agentCanMove(caveMap: Array<Array<ICave>>, newX: number, newY: number): boolean {
+	const height = caveMap.length
+	const width = caveMap[0].length
 	
+	const possibleX = newX >= 0 && newX < width
+	const possibleY = newY >= 0 && newY < height
+
+	return (possibleX && possibleY)
 }
 
 const caveMap = generateMap([4, 4])
-for (let index = 0; index < caveMap.length; index++) {
-	const cave = caveMap[index];
-	console.log(cave)
-}
+const agentPosition = [0,0]
+console.log(caveMap[agentPosition[1]][agentPosition[0]])
+const result = moveAgent(caveMap, agentPosition, Direction.Right)
+console.log(result)
